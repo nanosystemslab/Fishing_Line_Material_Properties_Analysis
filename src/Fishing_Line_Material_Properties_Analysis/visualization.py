@@ -2,6 +2,7 @@
 
 import logging
 from pathlib import Path
+from typing import Any
 from typing import Dict
 from typing import List
 
@@ -109,7 +110,7 @@ class MaterialVisualizer:
 
         # Set limits for stress-strain plots
         if y_param == "Stress":
-            ax.set_ylim([0, y.max() * 1.1])
+            ax.set_ylim((0, float(y.max() * 1.1)))
 
         # Mark yield point instead of fracture point
         if hasattr(data.meta, "yield_point_strain") and hasattr(
@@ -227,7 +228,7 @@ class MaterialVisualizer:
         # Save plot
         self._save_multi_trace_plot(fig, data_list, x_param, y_param, title_suffix)
 
-    def _create_base_figure(self):
+    def _create_base_figure(self) -> tuple[Any, Any]:  # Returns fig, ax
         """Create base figure with styling."""
         figsize = 4
         figdpi = 600
@@ -250,7 +251,9 @@ class MaterialVisualizer:
 
         return fig, ax
 
-    def _collect_multi_trace_stats(self, data_list):
+    def _collect_multi_trace_stats(
+        self, data_list: List[pd.DataFrame]
+    ) -> tuple[List[float], List[float], List[float]]:
         """Collect statistics from multiple traces."""
         moduli = []
         yield_stresses = []
@@ -266,14 +269,18 @@ class MaterialVisualizer:
 
         return moduli, yield_stresses, max_forces
 
-    def _plot_individual_traces(self, ax, data_list, x_param, y_param):
+    def _plot_individual_traces(
+        self, ax: Any, data_list: List[pd.DataFrame], x_param: str, y_param: str
+    ) -> None:
         """Plot individual traces on the axes."""
         for i, data in enumerate(data_list):
             x = data[x_param]
             y = data[y_param]
             ax.plot(x, y, alpha=0.7, linewidth=1.2, label=f"Sample {i + 1}")
 
-    def _configure_multi_trace_axes(self, ax, data_list, x_param, y_param):
+    def _configure_multi_trace_axes(
+        self, ax: Any, data_list: List[pd.DataFrame], x_param: str, y_param: str
+    ) -> None:
         """Configure axes labels and limits."""
         ax.set_xlabel(self.plot_params[x_param]["unit"])
         ax.set_ylabel(self.plot_params[y_param]["unit"])
@@ -286,7 +293,13 @@ class MaterialVisualizer:
         if x_param == "Strain":
             ax.set_xlim([0, 1])
 
-    def _add_multi_trace_statistics(self, ax, moduli, yield_stresses, max_forces):
+    def _add_multi_trace_statistics(
+        self,
+        ax: Any,
+        moduli: List[float],
+        yield_stresses: List[float],
+        max_forces: List[float],
+    ) -> None:
         """Add average statistics to legend."""
         if moduli:
             avg_modulus_mpa = np.mean(moduli) * 1e-6
@@ -300,13 +313,20 @@ class MaterialVisualizer:
             avg_force = np.mean(max_forces)
             ax.plot([], [], " ", label=f"Avg. Max Force = {avg_force:.2f} N")
 
-    def _setup_legend(self, ax):
+    def _setup_legend(self, ax: Any) -> None:
         """Setup legend with styling."""
         legend = ax.legend(frameon=True, bbox_to_anchor=(1.05, 1), loc="upper left")
         legend.get_frame().set_facecolor("none")
         legend.get_frame().set_edgecolor("black")
 
-    def _save_multi_trace_plot(self, fig, data_list, x_param, y_param, title_suffix):
+    def _save_multi_trace_plot(
+        self,
+        fig: Any,
+        data_list: List[pd.DataFrame],
+        x_param: str,
+        y_param: str,
+        output_dir: str,
+    ) -> None:
         """Save the multi-trace plot."""
         first_data = data_list[0]
         length_in = (
@@ -323,6 +343,13 @@ class MaterialVisualizer:
         # Create group and length-specific directory structure
         group_length_dir = self.output_dir / group_name / length_name
         group_length_dir.mkdir(parents=True, exist_ok=True)
+
+        # To (Option A - safest):
+        if data_list:
+            meta = data_list[0].meta
+            title_suffix = f"{meta.size}in-{meta.ctype}"
+        else:
+            title_suffix = "unknown"
 
         if title_suffix:
             plot_filename = f"plot-{title_suffix}-multi-{y_param}-vs-{x_param}.png"
@@ -394,7 +421,9 @@ class MaterialVisualizer:
 
         self.log.info(f"Output plot saved: {plot_path}")
 
-    def create_summary_plot(self, group_results: Dict, output_dir: str) -> None:
+    def create_summary_plot(
+        self, group_results: Dict[str, Any], output_dir: str
+    ) -> None:  # Fix Dict type
         """Create summary plots comparing results across groups and lengths.
 
         Args:

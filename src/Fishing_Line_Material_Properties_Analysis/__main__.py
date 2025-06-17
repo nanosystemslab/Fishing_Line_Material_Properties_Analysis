@@ -10,6 +10,9 @@ import argparse
 import logging
 import sys
 from pathlib import Path
+from typing import Any
+from typing import Dict
+from typing import List
 
 import numpy as np
 
@@ -26,7 +29,7 @@ def setup_logging(verbosity: int) -> None:
     )
 
 
-def parse_command_line() -> dict:
+def parse_command_line() -> Dict[str, Any]:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Analyze and visualize fishing line material properties",
@@ -128,7 +131,7 @@ def parse_command_line() -> dict:
     return args
 
 
-def handle_analyze_command(args: dict) -> int:
+def handle_analyze_command(args: Dict[str, Any]) -> int:
     """Handle the analyze command."""
     analyzer = MaterialAnalyzer()
     visualizer = MaterialVisualizer(output_dir=args["output"])
@@ -253,7 +256,7 @@ def handle_analyze_command(args: dict) -> int:
         return 1
 
 
-def _save_individual_results_csv(results: list, output_dir: str) -> None:
+def _save_individual_results_csv(results: List[Any], output_dir: str) -> None:
     """Save individual test results to CSV file."""
     from pathlib import Path
 
@@ -274,7 +277,9 @@ def _save_individual_results_csv(results: list, output_dir: str) -> None:
     logging.info(f"Individual results saved to {csv_path}")
 
 
-def _save_multi_results_csv(results: list, output_dir: str) -> None:
+def _save_multi_results_csv(
+    results: List[Any], output_dir: str
+) -> None:  # list → List[Any]
     """Save multi-run average results to CSV file."""
     from pathlib import Path
 
@@ -295,7 +300,7 @@ def _save_multi_results_csv(results: list, output_dir: str) -> None:
     logging.info(f"Multi-run averages saved to {csv_path}")
 
 
-def handle_visualize_command(args: dict) -> int:
+def handle_visualize_command(args: Dict[str, Any]) -> int:  # dict → Dict[str, Any]
     """Handle the visualize command."""
     visualizer = MaterialVisualizer(output_dir=args["output"])
 
@@ -313,7 +318,7 @@ def handle_visualize_command(args: dict) -> int:
         return 1
 
 
-def handle_batch_command(args: dict) -> int:
+def handle_batch_command(args: Dict[str, Any]) -> int:  # dict → Dict[str, Any]
     """Handle the batch processing command."""
     analyzer = MaterialAnalyzer()
     visualizer = MaterialVisualizer(output_dir=args["output"])
@@ -325,7 +330,7 @@ def handle_batch_command(args: dict) -> int:
             return 1
 
         # Process each group directory
-        group_results = {}
+        group_results: Dict[str, Any] = {}
         for group_dir in data_dir.glob("group_*"):
             if not group_dir.is_dir():
                 continue

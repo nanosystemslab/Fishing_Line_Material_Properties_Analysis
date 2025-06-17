@@ -4,6 +4,7 @@ import logging
 import os
 import types
 from pathlib import Path
+from typing import Any
 from typing import Dict
 from typing import List
 
@@ -276,16 +277,17 @@ class MaterialAnalyzer:
                         strain_points.append(subset_strain.iloc[i])
 
                 if len(moduli) > 10:
-                    moduli = np.array(moduli)
-                    strain_points = np.array(strain_points)
+                    # Convert to numpy arrays with different variable names
+                    moduli_array = np.array(moduli)
+                    strain_points_array = np.array(strain_points)
 
                     # Find where modulus drops to 70% of initial value
-                    initial_modulus = np.mean(moduli[:5])  # First 5 points
+                    initial_modulus = np.mean(moduli_array[:5])  # First 5 points
                     threshold_modulus = initial_modulus * 0.7
 
-                    drop_indices = np.where(moduli < threshold_modulus)[0]
+                    drop_indices = np.where(moduli_array < threshold_modulus)[0]
                     if len(drop_indices) > 0:
-                        yield_strain = strain_points[drop_indices[0]]
+                        yield_strain = strain_points_array[drop_indices[0]]
                         if 0.15 < yield_strain < (strain.max() * 0.9):
                             return [yield_strain]
             except Exception as e:
@@ -303,7 +305,7 @@ class MaterialAnalyzer:
             self.log.warning(f"Yield detection failed: {e}")
             return [df[strain_col].max() * 0.7]
 
-    def calculate_summary_stats(self, data_list: List[pd.DataFrame]) -> Dict[str, any]:
+    def calculate_summary_stats(self, data_list: List[pd.DataFrame]) -> Dict[str, Any]:
         """Calculate summary statistics for a group of test data.
 
         Args:
@@ -342,7 +344,7 @@ class MaterialAnalyzer:
         return stats
 
     def generate_summary_report(
-        self, group_results: Dict[str, any], output_dir: str
+        self, group_results: Dict[str, Any], output_dir: str
     ) -> None:
         """Generate a summary report of all test results.
 

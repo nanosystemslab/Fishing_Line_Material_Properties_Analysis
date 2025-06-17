@@ -40,6 +40,7 @@ repos:
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+        exclude: node_modules/
       - id: flake8
         name: flake8
         entry: flake8
@@ -67,7 +68,16 @@ repos:
         language: system
         types: [text]
         stages: [pre-commit, pre-push, manual]
+        exclude: node_modules/
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
+        exclude: node_modules/
+
+exclude: |
+  (?x)^(
+    node_modules/.*|
+    \.git/.*|
+    \.cache/.*
+  )$

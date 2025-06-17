@@ -78,7 +78,7 @@ jobs:
           result = "${{ runner.os }}-{}-{}-pre-commit".format(python, digest[:8])
 
           print("result={}".format(result))
-          
+
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
               f.write("result={}\n".format(result))
 

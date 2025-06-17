@@ -22,7 +22,7 @@ except ImportError:
 class MaterialAnalyzer:
     """Analyzer for fishing line material properties."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the MaterialAnalyzer."""
         self.log = logging.getLogger(__name__)
 
@@ -34,42 +34,43 @@ class MaterialAnalyzer:
 
         Returns:
             DataFrame with material test data and metadata
+
+        Raises:
+            ValueError: If file is not in CSV format
         """
         self.log.debug("Loading file: %s", filepath)
-
         if not filepath.endswith(".csv"):
             raise ValueError(f"File must be CSV format: {filepath}")
-
         # Read CSV file
         df = pd.read_csv(filepath, skiprows=1)
         df.drop(0, axis=0, inplace=True)
-
         # Parse metadata from filename and directory structure
         metadata = self._parse_metadata(filepath)
-
         # Convert data types
         df["Force"] = df["Force"].astype(float)
         df["Stroke"] = df["Stroke"].astype(float)
-
         # Calculate stress and strain
         area = np.pi * 0.25 * (metadata.size * 10**-3) ** 2
         stress = (df["Force"] - df["Force"].min()) / area
         strain = (df["Stroke"] - df["Stroke"].min()) / metadata.length
-
         df["Stress"] = stress
         df["Strain"] = strain
-
         # Add metadata to dataframe
         df.meta = metadata
-
         # Calculate derived properties
         self._calculate_material_properties(df)
-
         self.log.debug("File loaded successfully")
         return df
 
     def _parse_metadata(self, filepath: str) -> types.SimpleNamespace:
-        """Parse metadata from file path and name."""
+        """Parse metadata from file path and name.
+
+        Args:
+            filepath: Path to the file to parse metadata from
+
+        Returns:
+            SimpleNamespace containing parsed metadata (size, ctype, test_run, length)
+        """
         fname = os.path.basename(filepath)
         dname = os.path.dirname(filepath)
 
@@ -105,7 +106,15 @@ class MaterialAnalyzer:
         return metadata
 
     def _parse_length(self, dname_parts: List[str], run_num: int) -> float:
-        """Parse specimen length from directory structure."""
+        """Parse specimen length from directory structure.
+
+        Args:
+            dname_parts: List of directory path components
+            run_num: Test run number (unused but kept for compatibility)
+
+        Returns:
+            Specimen length in millimeters
+        """
         for part in dname_parts:
             if "in" in part and any(char.isdigit() for char in part):
                 # Extract number before "in"
@@ -120,7 +129,11 @@ class MaterialAnalyzer:
         return 254.0  # 10 inches in mm
 
     def _calculate_material_properties(self, df: pd.DataFrame) -> None:
-        """Calculate material properties like modulus and yield strength."""
+        """Calculate material properties like modulus and yield strength.
+
+        Args:
+            df: DataFrame containing stress-strain data
+        """
         stress = df["Stress"]
         strain = df["Strain"]
 
@@ -197,6 +210,14 @@ class MaterialAnalyzer:
         """Find yield point using smoothed derivative method.
 
         This method ignores early inflections to find the real yield point.
+
+        Args:
+            df: DataFrame containing stress-strain data
+            stress_col: Name of the stress column
+            strain_col: Name of the strain column
+
+        Returns:
+            List containing yield strain value(s)
         """
         try:
             stress = df[stress_col]
@@ -282,8 +303,16 @@ class MaterialAnalyzer:
             self.log.warning(f"Yield detection failed: {e}")
             return [df[strain_col].max() * 0.7]
 
-    def calculate_summary_stats(self, data_list: List[pd.DataFrame]) -> Dict:
-        """Calculate summary statistics for a group of test data."""
+    def calculate_summary_stats(self, data_list: List[pd.DataFrame]) -> Dict[str, any]:
+        """Calculate summary statistics for a group of test data.
+
+        Args:
+            data_list: List of DataFrames containing test data
+
+        Returns:
+            Dictionary containing summary statistics (averages,
+            standard deviations, etc.)
+        """
         if not data_list:
             return {}
 
@@ -312,8 +341,15 @@ class MaterialAnalyzer:
 
         return stats
 
-    def generate_summary_report(self, group_results: Dict, output_dir: str) -> None:
-        """Generate a summary report of all test results."""
+    def generate_summary_report(
+        self, group_results: Dict[str, any], output_dir: str
+    ) -> None:
+        """Generate a summary report of all test results.
+
+        Args:
+            group_results: Dictionary containing grouped test results
+            output_dir: Directory to save the summary report
+        """
         output_path = Path(output_dir) / "summary_report.txt"
 
         with open(output_path, "w") as f:

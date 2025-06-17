@@ -24,7 +24,7 @@ except ImportError:
 
 
 package = "Fishing_Line_Material_Properties_Analysis"
-python_versions = ["3.12", "3.11", "3.10", "3.9"]
+python_versions = ["3.12", "3.11"]  # Updated to match pyproject.toml requirements
 nox.needs_version = ">= 2021.6.6"
 nox.options.sessions = (
     "pre-commit",
@@ -142,9 +142,9 @@ def precommit(session: Session) -> None:
 @session(python=python_versions[0])
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
-    requirements = session.poetry.export_requirements()
+    session.install(".")
     session.install("safety")
-    session.run("safety", "check", "--full-report", f"--file={requirements}")
+    session.run("safety", "check", "--installed")
 
 
 @session(python=python_versions)
@@ -153,6 +153,8 @@ def mypy(session: Session) -> None:
     args = session.posargs or ["src", "tests", "docs/conf.py"]
     session.install(".")
     session.install("mypy", "pytest")
+    # Install type stubs that are in your dev dependencies
+    session.install("pandas-stubs", "types-seaborn")
     session.run("mypy", *args)
     if not session.posargs:
         session.run("mypy", f"--python-executable={sys.executable}", "noxfile.py")

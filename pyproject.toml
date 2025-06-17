@@ -8,6 +8,7 @@ readme = "README.md"
 homepage = "https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis"
 repository = "https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis"
 documentation = "https://Fishing_Line_Material_Properties_Analysis.readthedocs.io"
+packages = [{include = "Fishing_Line_Material_Properties_Analysis", from = "src"}]  # Add this line
 classifiers = [
     "Development Status :: 5 - Production/Stable",
 ]

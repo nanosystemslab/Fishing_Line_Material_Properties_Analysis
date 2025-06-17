@@ -144,8 +144,8 @@ def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     session.install(".")
     session.install("safety")
-    # Use check command with --json for non-interactive CI
-    session.run("safety", "check", "--json")
+    # Ignore pip vulnerability 75180 - it's a build tool vulnerability, not runtime
+    session.run("safety", "check", "--ignore", "75180")
 
 
 @session(python=python_versions)

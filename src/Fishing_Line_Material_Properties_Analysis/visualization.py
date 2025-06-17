@@ -271,7 +271,7 @@ class MaterialVisualizer:
         for i, data in enumerate(data_list):
             x = data[x_param]
             y = data[y_param]
-            ax.plot(x, y, alpha=0.7, linewidth=1.2, label=f"Sample {i+1}")
+            ax.plot(x, y, alpha=0.7, linewidth=1.2, label=f"Sample {i + 1}")
 
     def _configure_multi_trace_axes(self, ax, data_list, x_param, y_param):
         """Configure axes labels and limits."""

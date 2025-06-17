@@ -144,8 +144,8 @@ def handle_analyze_command(args: dict) -> int:
                 # Print material properties as single line
                 print(
                     f"File: {input_file} | Force: {data.meta.max_force:.2f}N | "
-                    f"Modulus: {data.meta.modulus*1e-6:.2f}MPa | "
-                    f"Yield: {data.meta.yield_stress*1e-6:.2f}MPa | "
+                    f"Modulus: {data.meta.modulus * 1e-6:.2f}MPa | "
+                    f"Yield: {data.meta.yield_stress * 1e-6:.2f}MPa | "
                     f"KE: {data.meta.kinetic_energy:.4f}J | "
                     f"Velocity: {data.meta.velocity:.2f}m/s | "
                     f"Length: {data.meta.length:.1f}mm | "

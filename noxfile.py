@@ -144,8 +144,8 @@ def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     session.install(".")
     session.install("safety")
-    # Use 'scan' instead of 'check --installed' for newer safety versions
-    session.run("safety", "scan")
+    # Use check command with --json for non-interactive CI
+    session.run("safety", "check", "--json")
 
 
 @session(python=python_versions)

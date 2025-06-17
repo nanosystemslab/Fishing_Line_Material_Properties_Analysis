@@ -26,6 +26,11 @@ seaborn = "^0.13.2"
 scipy = "^1.15.3"
 kneed = "^0.8.5"
 python-dateutil = "^2.9.0.post0"
+jinja2 = ">=3.1.6"
+setuptools = ">=78.1.1"
+cryptography = ">=44.0.1"
+h11 = ">=0.16.0"
+starlette = ">=0.40.0"
 
 [tool.poetry.group.dev.dependencies]
 Pygments = ">=2.10.0"
@@ -53,6 +58,8 @@ typeguard = ">=2.13.3"
 xdoctest = {extras = ["colors"], version = ">=0.15.10"}
 myst-parser = {version = ">=0.16.1"}
 nox = "^2025.5.1"
+pandas-stubs = "^2.2.3.250527"
+types-seaborn = "^0.13.2.20250516"
 
 [tool.poetry.scripts]
 Fishing_Line_Material_Properties_Analysis = "Fishing_Line_Material_Properties_Analysis.__main__:main"

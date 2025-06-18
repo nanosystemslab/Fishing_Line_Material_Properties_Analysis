@@ -54,6 +54,7 @@ safety = ">=1.10.3"
 sphinx = ">=4.3.2"
 sphinx-autobuild = ">=2021.3.14"
 sphinx-argparse = ">=0.4.0"
+sphinx-design = ">=0.5.0"
 pydata-sphinx-theme = ">=0.15.0"
 typeguard = ">=2.13.3"
 xdoctest = {extras = ["colors"], version = ">=0.15.10"}
@@ -61,6 +62,7 @@ myst-parser = {version = ">=0.16.1"}
 nox = "^2025.5.1"
 pandas-stubs = "^2.2.3.250527"
 types-seaborn = "^0.13.2.20250516"
+linkify-it-py = "^2.0.3"
 
 [tool.poetry.scripts]
 Fishing_Line_Material_Properties_Analysis = "Fishing_Line_Material_Properties_Analysis.__main__:main"

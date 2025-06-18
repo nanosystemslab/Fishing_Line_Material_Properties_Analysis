@@ -13,6 +13,9 @@ copyright = '2025, Nanosystems Lab'
 author = 'Nanosystems Lab'
 release = '0.0.1'
 
+# Custom title for the HTML pages
+html_title = f'{project}<br/>v{release} documentation'
+
 # -- General configuration ---------------------------------------------------
 extensions = [
     'sphinx.ext.autodoc',
@@ -20,7 +23,6 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
-    # 'sphinx_argparse',  # Temporarily commented out
     'myst_parser',
 ]
 
@@ -58,7 +60,7 @@ html_theme_options = {
     # Search
     "search_bar_text": "Search the docs...",
     
-    # Page elements
+    # Page elements - simplified to avoid template errors
     "show_prev_next": True,
 }
 
@@ -70,12 +72,26 @@ html_context = {
     "doc_path": "docs/",
 }
 
+# Custom CSS (optional)
+html_css_files = [
+    # "custom.css",  # You can create this file in docs/_static/custom.css
+]
+
 # -- Options for autodoc ----------------------------------------------------
 autodoc_default_options = {
     'members': True,
     'undoc-members': True,
     'show-inheritance': True,
+    'special-members': '__init__',
+    'exclude-members': '__weakref__'
 }
+
+# Generate autosummary stub files
+autosummary_generate = True
+autosummary_imported_members = True
+
+# Mock imports for packages that might not be available during doc build
+autodoc_mock_imports = []
 
 # -- Options for intersphinx extension --------------------------------------
 intersphinx_mapping = {
@@ -85,6 +101,16 @@ intersphinx_mapping = {
     'matplotlib': ('https://matplotlib.org/stable/', None),
 }
 
-# -- Options for Napoleon extension -----------------------------------------
-napoleon_google_docstring = True
-napoleon_numpy_docstring = True
+# -- Options for MyST parser --------------------------------------------
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+    "html_admonition",
+    "html_image",
+    # "linkify",  # Removed - requires additional dependency
+    "replacements",
+    "smartquotes",
+    "substitution",
+    "tasklist",
+]
+myst_heading_anchors = 3  # Generate anchors for headings up to level 3

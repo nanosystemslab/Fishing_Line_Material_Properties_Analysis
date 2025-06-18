@@ -4,10 +4,16 @@ A comprehensive Python package for analyzing material properties of fishing line
 
 ```{toctree}
 :maxdepth: 2
-:hidden:
+:caption: Documentation
 
 usage
 reference
+```
+
+```{toctree}
+:maxdepth: 1
+:caption: Project Info
+
 contributing
 codeofconduct
 license
@@ -19,31 +25,17 @@ Fishing Line Material Properties Analysis is a scientific computing tool designe
 
 ## Key Features
 
-::::{grid} 2
-:::{grid-item-card} 🔬 Material Properties Analysis
-:text-align: center
-
+### 🔬 Material Properties Analysis
 Calculate modulus, yield stress, and maximum force from tensile test data with automated curve fitting and analysis.
-:::
 
-:::{grid-item-card} ⚡ Kinetic Energy Estimation  
-:text-align: center
-
+### ⚡ Kinetic Energy Estimation  
 Compute kinetic energy and velocity from stress-strain curves using validated mechanical models.
-:::
 
-:::{grid-item-card} 📊 Publication-Ready Visualization
-:text-align: center
-
+### 📊 Publication-Ready Visualization
 Generate high-quality stress-strain plots with material property annotations suitable for scientific publications.
-:::
 
-:::{grid-item-card} 🚀 Batch Processing
-:text-align: center
-
+### 🚀 Batch Processing
 Process entire directory structures of test data automatically with parallel processing capabilities.
-:::
-::::
 
 ## Quick Start
 

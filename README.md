@@ -28,9 +28,9 @@
 ## Installation
 
 ```console
-$ git clone https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis
-$ cd Fishing_Line_Material_Properties_Analysis
-$ poetry install
+  git clone https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis
+  cd Fishing_Line_Material_Properties_Analysis
+  poetry install
 ```
 
 ## Usage
@@ -38,7 +38,7 @@ $ poetry install
 ### Single File Analysis
 
 ```console
-$ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5in/test--line-crimp-21--0.csv
+  poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5in/test--line-crimp-21--0.csv
 ```
 
 **Output:** `File: data/group_1/5in/test--line-crimp-21--0.csv | Force: 45.23N | Modulus: 2.45MPa | Yield: 1.85MPa | KE: 0.0234J | Velocity: 1.03m/s | Length: 127.0mm | Diameter: 21mm`
@@ -46,7 +46,7 @@ $ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5
 ### Multi-Sample Analysis
 
 ```console
-$ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5in/*.csv --plot-type multi
+  poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5in/*.csv --plot-type multi
 ```
 
 **Output:** `Multi-sample | Samples: 10 | Avg KE: 0.0245±0.0034J | Avg Velocity: 1.05±0.15m/s | Avg Force: 46.12±3.45N`
@@ -56,19 +56,19 @@ $ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5
 **Generate single plots for all trials:**
 
 ```console
-$ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_*/*in/test--line-crimp-*
+  poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_*/*in/test--line-crimp-*
 ```
 
 **Generate multi-trace plots for each group/length combination:**
 
 ```console
-$ find data -name "*in" -type d | while read dir; do echo "Processing $dir..."; poetry run Fishing_Line_Material_Properties_Analysis analyze -i $dir/test--line-crimp-* --plot-type multi; done
+  find data -name "*in" -type d | while read dir; do echo "Processing $dir..."; poetry run Fishing_Line_Material_Properties_Analysis analyze -i $dir/test--line-crimp-* --plot-type multi; done
 ```
 
 ### Alternative Batch Command
 
 ```console
-$ poetry run Fishing_Line_Material_Properties_Analysis batch -d data --summary
+  poetry run Fishing_Line_Material_Properties_Analysis batch -d data --summary
 ```
 
 ## Output

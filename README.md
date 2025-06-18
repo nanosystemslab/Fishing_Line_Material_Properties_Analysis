@@ -17,7 +17,7 @@
 ![Output Types](https://img.shields.io/badge/Outputs-Plots%20%7C%20Data%20%7C%20Reports-orange)
 
 [repository]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis
-[read the docs]: https://fishing-line-material-properties-analysis.readthedocs.io/en/latest/
+[read the docs]: https://fishing-line-material-properties-analysis.readthedocs.io/en/latest//
 [tests]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/actions?workflow=Tests
 [codecov]: https://app.codecov.io/gh/nanosystemslab/Fishing_Line_Material_Properties_Analysis
 [pre-commit]: https://github.com/pre-commit/pre-commit

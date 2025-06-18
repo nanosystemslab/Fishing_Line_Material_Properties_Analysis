@@ -11,10 +11,10 @@
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
 
 [![Read the documentation at https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/](https://img.shields.io/readthedocs/Fishing_Line_Material_Properties_Analysis/latest.svg?label=Read%20the%20Docs)][read the docs]
-[![Analysis Types](https://img.shields.io/badge/Analysis-Material%20Properties-blue)]
-[![Calculations](https://img.shields.io/badge/Calculates-Modulus%20%7C%20Yield%20%7C%20KE-green)]
-[![CLI](https://img.shields.io/badge/Interface-CLI-red)]
-[![Output Types](https://img.shields.io/badge/Outputs-Plots%20%7C%20Data%20%7C%20Reports-orange)]
+![Analysis Types](https://img.shields.io/badge/Analysis-Material%20Properties-blue)
+![Calculations](https://img.shields.io/badge/Calculates-Modulus%20%7C%20Yield%20%7C%20KE-green)
+![CLI](https://img.shields.io/badge/Interface-CLI-red)
+![Output Types](https://img.shields.io/badge/Outputs-Plots%20%7C%20Data%20%7C%20Reports-orange)
 
 [repository]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis
 [read the docs]: https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/

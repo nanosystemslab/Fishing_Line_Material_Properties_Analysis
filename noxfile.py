@@ -219,15 +219,20 @@ def docs_build(session: Session) -> None:
     args = session.posargs or ["docs", "docs/_build"]
     if not session.posargs and "FORCE_COLOR" in os.environ:
         args.insert(0, "--color")
-
     # Use pip directly to avoid poetry export issues
     session.run("pip", "install", ".")
-    session.run("pip", "install", "sphinx", "sphinx-argparse", "furo", "myst-parser")
-
+    session.run(
+        "pip",
+        "install",
+        "sphinx",
+        "sphinx-argparse",
+        "furo",
+        "myst-parser",
+        "pydata-sphinx-theme",
+    )
     build_dir = Path("docs", "_build")
     if build_dir.exists():
         shutil.rmtree(build_dir)
-
     session.run("sphinx-build", *args)
 
 

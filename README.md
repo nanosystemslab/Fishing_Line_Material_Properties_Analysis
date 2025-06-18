@@ -1,13 +1,11 @@
 # Fishing_Line_Material_Properties_Analysis
 
-[![Status](https://img.shields.io/badge/status-development-orange)][repository]
-[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)][repository]
+[![Status](https://img.shields.io/badge/status-stable-brightgreen)][repository]
+[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)][repository]
 [![License](https://img.shields.io/badge/license-GPL--3.0-green)][license]
-
 [![Read the documentation at https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/](https://img.shields.io/readthedocs/Fishing_Line_Material_Properties_Analysis/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![Tests](https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/nanosystemslab/Fishing_Line_Material_Properties_Analysis/branch/main/graph/badge.svg)][codecov]
-
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
 
@@ -17,6 +15,7 @@
 [codecov]: https://app.codecov.io/gh/nanosystemslab/Fishing_Line_Material_Properties_Analysis
 [pre-commit]: https://github.com/pre-commit/pre-commit
 [black]: https://github.com/psf/black
+[license]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/blob/main/LICENSE
 
 ## Features
 
@@ -55,13 +54,11 @@ $ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5
 ### Efficient Batch Processing
 
 **Generate single plots for all trials:**
-
 ```console
 $ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_*/*in/test--line-crimp-*
 ```
 
 **Generate multi-trace plots for each group/length combination:**
-
 ```console
 $ find data -name "*in" -type d | while read dir; do echo "Processing $dir..."; poetry run Fishing_Line_Material_Properties_Analysis analyze -i $dir/test--line-crimp-* --plot-type multi; done
 ```
@@ -84,7 +81,6 @@ $ poetry run Fishing_Line_Material_Properties_Analysis batch -d data --summary
 ## Data Format
 
 Expected CSV format:
-
 ```
 "Time","Force","Stroke"
 "sec","N","mm"
@@ -99,6 +95,11 @@ Expected CSV format:
 - `--x-param`, `--y-param`: Time, Force, Stroke, Stress, Strain
 - `-o, --output`: Output directory (default: `out`)
 
+## Contributing
+
+Contributions are very welcome.
+To learn more, see the [Contributor Guide].
+
 ## License
 
 Distributed under the [GPL 3.0 license][license]. This project was generated from [@nanosystemslab]'s [Nanosystems Lab Python Cookiecutter] template.
@@ -106,6 +107,5 @@ Distributed under the [GPL 3.0 license][license]. This project was generated fro
 [@nanosystemslab]: https://github.com/nanosystemslab
 [nanosystems lab python cookiecutter]: https://github.com/nanosystemslab/cookiecutter-nanosystemslab
 [file an issue]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/issues
-[license]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/blob/main/LICENSE
 [contributor guide]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/blob/main/CONTRIBUTING.md
 [command-line reference]: https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/en/latest/usage.html

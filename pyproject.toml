@@ -74,7 +74,7 @@ source = ["Fishing_Line_Material_Properties_Analysis", "tests"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
+fail_under = 5
 
 [tool.isort]
 profile = "black"

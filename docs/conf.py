@@ -1,7 +1,8 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""Configuration file for the Sphinx documentation builder.
+
+For the full list of built-in configuration values, see the documentation:
+https://www.sphinx-doc.org/en/master/usage/configuration.html
+"""
 
 import os
 import sys
@@ -38,7 +39,9 @@ html_static_path = ["_static"]
 # PyData Sphinx Theme configuration
 html_theme_options = {
     # Header links
-    "github_url": "https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis",
+    "github_url": (
+        "https://github.com/nanosystemslab/" "Fishing_Line_Material_Properties_Analysis"
+    ),
     "use_edit_page_button": True,
     # Navigation and TOC
     "show_toc_level": 2,
@@ -67,7 +70,7 @@ html_context = {
 }
 
 # Custom CSS (optional)
-html_css_files = [
+html_css_files: list[str] = [
     # "custom.css",  # You can create this file in docs/_static/custom.css
 ]
 

@@ -9,7 +9,6 @@
 [![Codecov](https://codecov.io/gh/nanosystemslab/Fishing_Line_Material_Properties_Analysis/branch/main/graph/badge.svg)][codecov]
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15693814.svg)](https://doi.org/10.5281/zenodo.15693814)
 
 [repository]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis
 [read the docs]: https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/

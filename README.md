@@ -3,11 +3,13 @@
 [![Status](https://img.shields.io/badge/status-stable-brightgreen)][repository]
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)][repository]
 [![License](https://img.shields.io/badge/license-GPL--3.0-green)][license]
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15693814.svg)](https://doi.org/10.5281/zenodo.15693814)
 [![Read the documentation at https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/](https://img.shields.io/readthedocs/Fishing_Line_Material_Properties_Analysis/latest.svg?label=Read%20the%20Docs)][read the docs]
 [![Tests](https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/nanosystemslab/Fishing_Line_Material_Properties_Analysis/branch/main/graph/badge.svg)][codecov]
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15693814.svg)](https://doi.org/10.5281/zenodo.15693814)
 
 [repository]: https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis
 [read the docs]: https://Fishing_Line_Material_Properties_Analysis.readthedocs.io/
@@ -97,6 +99,26 @@ Expected CSV format:
 - `--plot-type`: `single` (default) or `multi`
 - `--x-param`, `--y-param`: Time, Force, Stroke, Stress, Strain
 - `-o, --output`: Output directory (default: `out`)
+
+## Citation
+
+If you use this software in your research, please cite:
+
+```bibtex
+@software{matthew_nakamura_2025_15693814,
+	author = {Matthew Nakamura},
+	doi = {10.5281/zenodo.15693814},
+	month = jun,
+	publisher = {Zenodo},
+	swhid = {swh:1:dir:9774416bfd0a3b64c546eeb74198f6abab0f55a4 ;origin=https://doi.org/10.5281/zenodo.15693813;vi sit=swh:1:snp:6196b6c9398e5737fef543af6732644c54c9 b97a;anchor=swh:1:rel:629adf510f09c35bc02be5156b08 598c85588ba7;path=nanosystemslab- Fishing\_Line\_Material\_Properties\_Analysis-da1d584},
+	title = {nanosystemslab/Fishing\_Line\_Material\_Properties\_An alysis: v1.0.0 - Initial Release},
+	url = {https://doi.org/10.5281/zenodo.15693814},
+	version = {v1.0.0},
+	year = 2025,
+	bdsk-url-1 = {https://doi.org/10.5281/zenodo.15693814}}
+```
+
+**DOI**: [10.5281/zenodo.15693814](https://doi.org/10.5281/zenodo.15693814)
 
 ## Contributing
 

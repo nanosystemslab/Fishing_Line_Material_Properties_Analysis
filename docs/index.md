@@ -26,15 +26,19 @@ Fishing Line Material Properties Analysis is a scientific computing tool designe
 ## Key Features
 
 ### 🔬 Material Properties Analysis
+
 Calculate modulus, yield stress, and maximum force from tensile test data with automated curve fitting and analysis.
 
-### ⚡ Kinetic Energy Estimation  
+### ⚡ Kinetic Energy Estimation
+
 Compute kinetic energy and velocity from stress-strain curves using validated mechanical models.
 
 ### 📊 Publication-Ready Visualization
+
 Generate high-quality stress-strain plots with material property annotations suitable for scientific publications.
 
 ### 🚀 Batch Processing
+
 Process entire directory structures of test data automatically with parallel processing capabilities.
 
 ## Quick Start
@@ -74,13 +78,13 @@ This package is designed for researchers and engineers working with:
 
 The analysis provides comprehensive material characterization:
 
-| Property | Value | Units | Description |
-|----------|-------|-------|-------------|
-| Young's Modulus | 2.45 | MPa | Material stiffness |
-| Yield Stress | 1.85 | MPa | Onset of plastic deformation |
-| Maximum Force | 45.23 | N | Peak load capacity |
-| Kinetic Energy | 0.0234 | J | Energy storage capacity |
-| Break Velocity | 1.03 | m/s | Calculated failure velocity |
+| Property        | Value  | Units | Description                  |
+| --------------- | ------ | ----- | ---------------------------- |
+| Young's Modulus | 2.45   | MPa   | Material stiffness           |
+| Yield Stress    | 1.85   | MPa   | Onset of plastic deformation |
+| Maximum Force   | 45.23  | N     | Peak load capacity           |
+| Kinetic Energy  | 0.0234 | J     | Energy storage capacity      |
+| Break Velocity  | 1.03   | m/s   | Calculated failure velocity  |
 
 ## Data Requirements
 
@@ -106,7 +110,7 @@ This package has been used in research published in materials science and engine
 ## Getting Help
 
 - **Usage Guide**: Detailed examples and workflows → {doc}`usage`
-- **API Reference**: Complete function documentation → {doc}`reference`  
+- **API Reference**: Complete function documentation → {doc}`reference`
 - **Contributing**: How to contribute to the project → {doc}`contributing`
 - **Issues**: Report bugs or request features on [GitHub](https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/issues)
 
@@ -130,4 +134,4 @@ This project is licensed under the GPL-3.0 License - see the {doc}`license` page
 
 ---
 
-*Developed by the [Nanosystems Lab](https://github.com/nanosystemslab) for the scientific community.*
+_Developed by the [Nanosystems Lab](https://github.com/nanosystemslab) for the scientific community._

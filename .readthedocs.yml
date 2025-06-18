@@ -13,7 +13,7 @@ build:
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
   configuration: docs/conf.py
-  fail_on_warning: false  # Changed to false temporarily to see what's happening
+  fail_on_warning: false # Changed to false temporarily to see what's happening
 
 # Install Python dependencies
 python:

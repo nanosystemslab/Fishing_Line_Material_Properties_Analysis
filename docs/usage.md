@@ -13,6 +13,7 @@ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/test.csv
 ```
 
 **Example output:**
+
 ```
 File: data/group_1/5in/test--line-crimp-21--0.csv | Force: 45.23N | Modulus: 2.45MPa | Yield: 1.85MPa | KE: 0.0234J | Velocity: 1.03m/s | Length: 127.0mm | Diameter: 21mm
 ```
@@ -26,6 +27,7 @@ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5in
 ```
 
 **Example output:**
+
 ```
 Multi-sample | Samples: 10 | Avg KE: 0.0245±0.0034J | Avg Velocity: 1.05±0.15m/s | Avg Force: 46.12±3.45N
 ```
@@ -45,7 +47,7 @@ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_*/*in
 Generate combined plots for each group/length combination:
 
 ```bash
-find data -name "*in" -type d | while read dir; do 
+find data -name "*in" -type d | while read dir; do
     echo "Processing $dir..."
     poetry run Fishing_Line_Material_Properties_Analysis analyze -i $dir/test--line-crimp-* --plot-type multi
 done
@@ -91,15 +93,18 @@ Your CSV files should have the following format:
 The analysis generates several types of output:
 
 ### Plots
+
 - Organized in `out/group_X/length/` directory structure
 - Stress-strain curves with material property annotations
 - Individual or multi-sample plots
 
 ### CSV Reports
+
 - `individual_results.csv`: Every single test result with material properties
 - `multi_run_averages.csv`: Group/length averages with standard deviations (multi-runs only)
 
 ### Console Output
+
 - Material properties and statistics for each analysis
 - Summary reports (with `--summary` flag)
 

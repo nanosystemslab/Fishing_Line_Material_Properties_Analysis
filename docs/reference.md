@@ -16,7 +16,7 @@ This page provides detailed documentation for all modules, classes, and function
 The Fishing Line Material Properties Analysis package consists of three main modules:
 
 - **Analysis Module**: Core functionality for processing material test data
-- **Visualization Module**: Plotting and data visualization capabilities  
+- **Visualization Module**: Plotting and data visualization capabilities
 - **Main Module**: Command-line interface and application entry point
 
 ### Quick Start

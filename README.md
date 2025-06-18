@@ -54,11 +54,13 @@ $ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_1/5
 ### Efficient Batch Processing
 
 **Generate single plots for all trials:**
+
 ```console
 $ poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_*/*in/test--line-crimp-*
 ```
 
 **Generate multi-trace plots for each group/length combination:**
+
 ```console
 $ find data -name "*in" -type d | while read dir; do echo "Processing $dir..."; poetry run Fishing_Line_Material_Properties_Analysis analyze -i $dir/test--line-crimp-* --plot-type multi; done
 ```
@@ -81,6 +83,7 @@ $ poetry run Fishing_Line_Material_Properties_Analysis batch -d data --summary
 ## Data Format
 
 Expected CSV format:
+
 ```
 "Time","Force","Stroke"
 "sec","N","mm"

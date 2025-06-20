@@ -63,6 +63,10 @@ nox = "^2025.5.1"
 pandas-stubs = "^2.2.3.250527"
 types-seaborn = "^0.13.2.20250516"
 linkify-it-py = "^2.0.3"
+pytest-cov = "^6.2.1"
+pytest-mock = "^3.14.1"
+psutil = "^7.0.0"
+autoflake = "^2.3.1"
 
 [tool.poetry.scripts]
 Fishing_Line_Material_Properties_Analysis = "Fishing_Line_Material_Properties_Analysis.__main__:main"

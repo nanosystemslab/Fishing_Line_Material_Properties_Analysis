@@ -42,24 +42,51 @@ class MaterialAnalyzer:
         self.log.debug("Loading file: %s", filepath)
         if not filepath.endswith(".csv"):
             raise ValueError(f"File must be CSV format: {filepath}")
-        # Read CSV file
-        df = pd.read_csv(filepath, skiprows=1)
-        df.drop(0, axis=0, inplace=True)
+
+        # Read CSV file with default behavior (gets correct column names)
+        df = pd.read_csv(filepath)
+
+        # Check if first row contains units instead of data
+        if len(df) > 0:
+            first_row = df.iloc[0].astype(str)
+            # Check if first row contains typical unit indicators
+            if any(
+                unit in " ".join(first_row.values).lower()
+                for unit in ["sec", "mm", "n", "pa"]
+            ):
+                # Remove the units row
+                df = df.drop(0).reset_index(drop=True)
+                self.log.debug("Removed units row from data")
+
         # Parse metadata from filename and directory structure
         metadata = self._parse_metadata(filepath)
+
         # Convert data types
-        df["Force"] = df["Force"].astype(float)
-        df["Stroke"] = df["Stroke"].astype(float)
+        df["Force"] = pd.to_numeric(df["Force"], errors="coerce")
+        df["Stroke"] = pd.to_numeric(df["Stroke"], errors="coerce")
+
+        # Remove any rows with NaN values that might have been created
+        df = df.dropna(subset=["Force", "Stroke"]).reset_index(drop=True)
+
         # Calculate stress and strain
         area = np.pi * 0.25 * (metadata.size * 10**-3) ** 2
+
+        # Handle potential zero area
+        if area <= 0:
+            self.log.warning("Zero or negative area detected, using default")
+            area = np.pi * 0.25 * (21 * 10**-3) ** 2  # Default to 21mm diameter
+
         stress = (df["Force"] - df["Force"].min()) / area
         strain = (df["Stroke"] - df["Stroke"].min()) / metadata.length
         df["Stress"] = stress
         df["Strain"] = strain
+
         # Add metadata to dataframe
         df.meta = metadata
+
         # Calculate derived properties
         self._calculate_material_properties(df)
+
         self.log.debug("File loaded successfully")
         return df
 
@@ -86,7 +113,10 @@ class MaterialAnalyzer:
                 size = 21  # default
                 ctype = "crimp"
 
-            run_num = int(slugs[2].split(".")[0])
+            try:
+                run_num = int(slugs[2].split(".")[0])
+            except (ValueError, IndexError):
+                run_num = 0
         else:
             # Fallback parsing
             size = 21
@@ -337,9 +367,10 @@ class MaterialAnalyzer:
         }
 
         if data_list:
-            stats["length"] = data_list[0].meta.length
-            stats["size"] = data_list[0].meta.size
-            stats["ctype"] = data_list[0].meta.ctype
+            first_meta = data_list[0].meta
+            stats["length"] = getattr(first_meta, "length", 254.0)
+            stats["size"] = getattr(first_meta, "size", 21)
+            stats["ctype"] = getattr(first_meta, "ctype", "crimp")
 
         return stats
 

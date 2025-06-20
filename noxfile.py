@@ -155,7 +155,7 @@ def safety(session: Session) -> None:
 @session(python=python_versions)
 def mypy(session: Session) -> None:
     """Type-check using mypy."""
-    args = session.posargs or ["src", "tests", "docs/conf.py"]
+    args = session.posargs or ["src", "docs/conf.py"]  # Remove "tests" from here
     session.install(".")
     session.install("mypy", "pytest")
     # Install type stubs that are in your dev dependencies

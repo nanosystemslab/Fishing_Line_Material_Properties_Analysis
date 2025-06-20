@@ -27,7 +27,7 @@ class MaterialAnalyzer:
         """Initialize the MaterialAnalyzer."""
         self.log = logging.getLogger(__name__)
 
-    def load_file(self, filepath: str) -> pd.DataFrame:
+    def load_file(self, filepath: str) -> pd.DataFrame:  # noqa: C901
         """Load material test data from CSV file.
 
         Args:
@@ -37,58 +37,78 @@ class MaterialAnalyzer:
             DataFrame with material test data and metadata
 
         Raises:
-            ValueError: If file is not in CSV format
+            ValueError: If file is not CSV format or missing required columns
         """
         self.log.debug("Loading file: %s", filepath)
         if not filepath.endswith(".csv"):
             raise ValueError(f"File must be CSV format: {filepath}")
 
-        # Read CSV file with default behavior (gets correct column names)
-        df = pd.read_csv(filepath)
+        try:
+            # Read CSV file
+            df = pd.read_csv(filepath, skiprows=1)
+            if df.empty:
+                raise ValueError(f"Empty CSV file: {filepath}")
 
-        # Check if first row contains units instead of data
-        if len(df) > 0:
-            first_row = df.iloc[0].astype(str)
-            # Check if first row contains typical unit indicators
-            if any(
-                unit in " ".join(first_row.values).lower()
-                for unit in ["sec", "mm", "n", "pa"]
-            ):
-                # Remove the units row
-                df = df.drop(0).reset_index(drop=True)
-                self.log.debug("Removed units row from data")
+            df.drop(0, axis=0, inplace=True)
 
-        # Parse metadata from filename and directory structure
-        metadata = self._parse_metadata(filepath)
+            # Check for required columns
+            required_columns = ["Force", "Stroke"]
+            missing_columns = [col for col in required_columns if col not in df.columns]
+            if missing_columns:
+                available_cols = list(df.columns)
+                raise ValueError(
+                    f"Missing required columns: {missing_columns}. "
+                    f"Available columns: {available_cols}"
+                )
 
-        # Convert data types
-        df["Force"] = pd.to_numeric(df["Force"], errors="coerce")
-        df["Stroke"] = pd.to_numeric(df["Stroke"], errors="coerce")
+            # Parse metadata from filename and directory structure
+            metadata = self._parse_metadata(filepath)
 
-        # Remove any rows with NaN values that might have been created
-        df = df.dropna(subset=["Force", "Stroke"]).reset_index(drop=True)
+            # Convert data types with error handling
+            df["Force"] = pd.to_numeric(df["Force"], errors="coerce")
+            df["Stroke"] = pd.to_numeric(df["Stroke"], errors="coerce")
 
-        # Calculate stress and strain
-        area = np.pi * 0.25 * (metadata.size * 10**-3) ** 2
+            # Check for too many NaN values after conversion
+            force_nan_ratio = df["Force"].isna().sum() / len(df)
+            stroke_nan_ratio = df["Stroke"].isna().sum() / len(df)
 
-        # Handle potential zero area
-        if area <= 0:
-            self.log.warning("Zero or negative area detected, using default")
-            area = np.pi * 0.25 * (21 * 10**-3) ** 2  # Default to 21mm diameter
+            if force_nan_ratio > 0.5:
+                raise ValueError("Too many invalid Force values in the data")
+            if stroke_nan_ratio > 0.5:
+                raise ValueError("Too many invalid Stroke values in the data")
 
-        stress = (df["Force"] - df["Force"].min()) / area
-        strain = (df["Stroke"] - df["Stroke"].min()) / metadata.length
-        df["Stress"] = stress
-        df["Strain"] = strain
+            # Drop rows with NaN values
+            df = df.dropna(subset=["Force", "Stroke"])
 
-        # Add metadata to dataframe
-        df.meta = metadata
+            if df.empty:
+                raise ValueError("No valid data rows after cleaning")
 
-        # Calculate derived properties
-        self._calculate_material_properties(df)
+            # Calculate stress and strain
+            area = np.pi * 0.25 * (metadata.size * 10**-3) ** 2
+            if area <= 0:
+                raise ValueError(f"Invalid area from size {metadata.size}")
 
-        self.log.debug("File loaded successfully")
-        return df
+            stress = (df["Force"] - df["Force"].min()) / area
+            strain = (df["Stroke"] - df["Stroke"].min()) / metadata.length
+            df["Stress"] = stress
+            df["Strain"] = strain
+
+            # Add metadata to dataframe
+            df.meta = metadata
+
+            # Calculate derived properties
+            self._calculate_material_properties(df)
+
+            self.log.debug("File loaded successfully")
+            return df
+
+        except pd.errors.EmptyDataError as err:
+            raise ValueError(f"Empty or invalid CSV file: {filepath}") from err
+        except Exception as err:
+            if isinstance(err, ValueError):
+                raise  # Re-raise ValueError as-is
+            else:
+                raise ValueError(f"Error loading {filepath}: {err}") from err
 
     def _parse_metadata(self, filepath: str) -> types.SimpleNamespace:
         """Parse metadata from file path and name.

@@ -10,11 +10,17 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from Fishing_Line_Material_Properties_Analysis.analysis import MaterialAnalyzer
 from Fishing_Line_Material_Properties_Analysis.visualization import MaterialVisualizer
 
 
 class TestEdgeCases:
     """Test edge cases and error conditions."""
+
+    def setUp(self) -> None:
+        """Set up test fixtures."""
+        self.temp_dir = tempfile.mkdtemp()
+        self.analyzer = MaterialAnalyzer()
 
     def setup_method(self) -> None:
         """Set up test fixtures."""

@@ -160,7 +160,7 @@ class TestUtilities:
             f.write('"Time","Force","Stroke"\n')
             f.write('"sec","N","mm"\n')
             for i in range(100):
-                f.write(f"{i*0.01},{i*0.1},{i*0.05}\n")
+                f.write(f"{i * 0.01},{i * 0.1},{i * 0.05}\n")
 
         results = []
 

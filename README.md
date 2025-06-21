@@ -4,6 +4,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)][repository]
 [![License](https://img.shields.io/badge/license-GPL--3.0-green)][license]
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15693814.svg)](https://doi.org/10.5281/zenodo.15693814)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15694088.svg)](https://doi.org/10.5281/zenodo.15694088)
 
 [![Tests](https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis/workflows/Tests/badge.svg)][tests]
 [![Codecov](https://codecov.io/gh/nanosystemslab/Fishing_Line_Material_Properties_Analysis/branch/main/graph/badge.svg)][codecov]
@@ -109,6 +110,8 @@ Expected CSV format:
 
 If you use this software in your research, please cite:
 
+### Software
+
 ```bibtex
 @software{matthew_nakamura_2025_15693814,
 	author = {Matthew Nakamura},
@@ -123,7 +126,22 @@ If you use this software in your research, please cite:
 	bdsk-url-1 = {https://doi.org/10.5281/zenodo.15693814}}
 ```
 
-**DOI**: [10.5281/zenodo.15693814](https://doi.org/10.5281/zenodo.15693814)
+### Dataset
+
+```bibtex
+@dataset{nakamura_2025_15694088,
+	author = {Nakamura, Matthew and Grogget, Jacob and HEYES, CORRISA and Okura, Kailer and Matsunaga, Kaitlyn and Brown, Joseph},
+	doi = {10.5281/zenodo.15694088},
+	month = jun,
+	publisher = {Zenodo},
+	title = {Fishing Line Material Properties Dataset},
+	url = {https://doi.org/10.5281/zenodo.15694088},
+	year = 2025,
+	bdsk-url-1 = {https://doi.org/10.5281/zenodo.15694088}}
+```
+
+**Software DOI**: [10.5281/zenodo.15693814](https://doi.org/10.5281/zenodo.15693814)  
+**Dataset DOI**: [10.5281/zenodo.15694088](https://doi.org/10.5281/zenodo.15694088)
 
 ## Contributing
 

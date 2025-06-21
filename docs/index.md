@@ -1,5 +1,8 @@
 # Fishing Line Material Properties Analysis
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15693814.svg)](https://doi.org/10.5281/zenodo.15693814)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15694088.svg)](https://doi.org/10.5281/zenodo.15694088)
+
 A comprehensive Python package for analyzing material properties of fishing lines from tensile test data.
 
 ```{toctree}
@@ -116,17 +119,40 @@ This package has been used in research published in materials science and engine
 
 ## Citation
 
-If you use this software in your research, please cite:
+If you use this software or dataset in your research, please cite:
+
+### Software
 
 ```bibtex
-@software{fishing_line_analysis,
-  title = {Fishing Line Material Properties Analysis},
-  author = {Nanosystems Lab},
-  year = {2025},
-  url = {https://github.com/nanosystemslab/Fishing_Line_Material_Properties_Analysis},
-  version = {0.0.1}
-}
+@software{matthew_nakamura_2025_15693814,
+	author = {Matthew Nakamura},
+	doi = {10.5281/zenodo.15693814},
+	month = jun,
+	publisher = {Zenodo},
+	swhid = {swh:1:dir:9774416bfd0a3b64c546eeb74198f6abab0f55a4 ;origin=https://doi.org/10.5281/zenodo.15693813;vi sit=swh:1:snp:6196b6c9398e5737fef543af6732644c54c9 b97a;anchor=swh:1:rel:629adf510f09c35bc02be5156b08 598c85588ba7;path=nanosystemslab- Fishing\_Line\_Material\_Properties\_Analysis-da1d584},
+	title = {nanosystemslab/Fishing\_Line\_Material\_Properties\_Analysis: v1.0.0 - Initial Release},
+	url = {https://doi.org/10.5281/zenodo.15693814},
+	version = {v1.0.0},
+	year = 2025,
+	bdsk-url-1 = {https://doi.org/10.5281/zenodo.15693814}}
 ```
+
+### Dataset
+
+```bibtex
+@dataset{nakamura_2025_15694088,
+	author = {Nakamura, Matthew and Grogget, Jacob and HEYES, CORRISA and Okura, Kailer and Matsunaga, Kaitlyn and Brown, Joseph},
+	doi = {10.5281/zenodo.15694088},
+	month = jun,
+	publisher = {Zenodo},
+	title = {Fishing Line Material Properties Dataset},
+	url = {https://doi.org/10.5281/zenodo.15694088},
+	year = 2025,
+	bdsk-url-1 = {https://doi.org/10.5281/zenodo.15694088}}
+```
+
+**Software DOI**: [10.5281/zenodo.15693814](https://doi.org/10.5281/zenodo.15693814)
+**Dataset DOI**: [10.5281/zenodo.15694088](https://doi.org/10.5281/zenodo.15694088)
 
 ## License
 

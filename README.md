@@ -140,7 +140,7 @@ If you use this software in your research, please cite:
 	bdsk-url-1 = {https://doi.org/10.5281/zenodo.15694088}}
 ```
 
-**Software DOI**: [10.5281/zenodo.15693814](https://doi.org/10.5281/zenodo.15693814)  
+**Software DOI**: [10.5281/zenodo.15693814](https://doi.org/10.5281/zenodo.15693814)
 **Dataset DOI**: [10.5281/zenodo.15694088](https://doi.org/10.5281/zenodo.15694088)
 
 ## Contributing

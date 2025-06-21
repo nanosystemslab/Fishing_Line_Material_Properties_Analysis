@@ -85,6 +85,38 @@ class TestMaterialAnalyzer:
         with pytest.raises(ValueError, match="File must be CSV format"):
             self.analyzer.load_file(txt_file)
 
+    def test_load_file_unquoted_header(self) -> None:
+        """Test loading file with unquoted extra header."""
+        csv_file = os.path.join(self.temp_dir, "test_unquoted.csv")
+        with open(csv_file, "w") as f:
+            f.write("1 _ 1,,\n")  # Unquoted header like your problematic files
+            f.write("Time,Force,Stroke\n")
+            f.write("sec,N,mm\n")
+            f.write("0.0,0.0,0.0\n")
+            f.write("0.1,1.0,0.1\n")
+            f.write("0.2,2.0,0.2\n")
+
+        df = self.analyzer.load_file(csv_file)
+        assert isinstance(df, pd.DataFrame)
+        assert "Force" in df.columns
+        assert "Stroke" in df.columns
+        assert len(df) > 0
+
+    def test_load_file_mixed_header_formats(self) -> None:
+        """Test detection logic with mixed quote formats."""
+        # Test case where first line has no quotes but second line does
+        csv_file = os.path.join(self.temp_dir, "test_mixed.csv")
+        with open(csv_file, "w") as f:
+            f.write("1 _ 1,,\n")  # No quotes
+            f.write('"Time","Force","Stroke"\n')  # With quotes
+            f.write('"sec","N","mm"\n')
+            f.write("0.0,0.0,0.0\n")
+
+        df = self.analyzer.load_file(csv_file)
+        assert isinstance(df, pd.DataFrame)
+        assert "Force" in df.columns
+        assert "Stroke" in df.columns
+
     def test_parse_metadata_standard_format(self) -> None:
         """Test metadata parsing with standard filename format."""
         filepath = "data/group_1/5in/test--line-crimp-21--0.csv"

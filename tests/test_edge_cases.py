@@ -25,6 +25,7 @@ class TestEdgeCases:
     def setup_method(self) -> None:
         """Set up test fixtures."""
         self.temp_dir = tempfile.mkdtemp()
+        self.analyzer = MaterialAnalyzer()
         self.visualizer = MaterialVisualizer(output_dir=self.temp_dir)
 
     def teardown_method(self) -> None:

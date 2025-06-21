@@ -104,6 +104,8 @@ class TestPerformance:
             df.meta.modulus = 10000 + i * 1000
             df.meta.yield_stress = 800 + i * 50
             df.meta.max_force = 10 + i
+            df.meta.ctype = "crimp"
+            df.meta.test_run = i
             data_list.append(df)
 
         start_time = time.time()

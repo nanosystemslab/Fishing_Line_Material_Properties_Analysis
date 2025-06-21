@@ -119,7 +119,10 @@ class TestPerformance:
         """Test memory efficiency with large datasets."""
         import gc
 
-        import psutil
+        try:
+            import psutil
+        except ImportError:
+            pytest.skip("psutil not available for memory testing")
 
         process = psutil.Process()
         initial_memory = process.memory_info().rss / 1024 / 1024  # MB

@@ -43,8 +43,30 @@ class MaterialAnalyzer:
         if not filepath.endswith(".csv"):
             raise ValueError(f"File must be CSV format: {filepath}")
 
-        # Read CSV file with default behavior (gets correct column names)
-        df = pd.read_csv(filepath)
+        # First, read the file to check for the extra header row
+        with open(filepath) as f:
+            first_line = f.readline().strip()
+            second_line = f.readline().strip()
+
+        # Check if first line is the problematic header
+        skip_rows = 0
+        if (
+            first_line.startswith('"1 _ 1"')
+            or first_line.startswith("1 _ 1")  # Handle unquoted version
+            or "Unnamed" in first_line
+            or (
+                '"Time"' not in first_line
+                and "Time" not in first_line
+                and ('"Time"' in second_line or "Time" in second_line)
+            )
+        ):
+            skip_rows = 1
+            self.log.debug(
+                f"Detected extra header row: {first_line!r}, skipping first line"
+            )
+
+        # Read CSV file, skipping the extra header if present
+        df = pd.read_csv(filepath, skiprows=skip_rows)
 
         # Check if first row contains units instead of data
         if len(df) > 0:

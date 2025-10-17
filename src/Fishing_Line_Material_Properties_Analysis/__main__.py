@@ -23,7 +23,7 @@ from .visualization import MaterialVisualizer
 
 def setup_logging(verbosity: int) -> None:
     """Setup logging configuration."""
-    log_fmt = "%(levelname)s - %(module)s - " "%(funcName)s @%(lineno)d: %(message)s"
+    log_fmt = "%(levelname)s - %(module)s - %(funcName)s @%(lineno)d: %(message)s"
     logging.basicConfig(
         filename=None, format=log_fmt, level=logging.getLevelName(verbosity)
     )
@@ -47,6 +47,28 @@ def parse_command_line() -> Dict[str, Any]:
         default=0,
         dest="verbosity",
         help="Verbose output (use -vv for more verbose)",
+    )
+
+    # Energy calculation parameters
+    parser.add_argument(
+        "--efficiency",
+        type=float,
+        default=0.5,
+        help="Energy conversion efficiency (0-1, default: 0.5)",
+    )
+
+    parser.add_argument(
+        "--alpha",
+        type=float,
+        default=0.3,
+        help="Fraction of local line mass engaged (0-1, default: 0.3)",
+    )
+
+    parser.add_argument(
+        "--projectile-mass",
+        type=float,
+        default=0.045,
+        help="Projectile mass in kg (default: 0.045 = 45g)",
     )
 
     # Subcommands
@@ -133,10 +155,13 @@ def parse_command_line() -> Dict[str, Any]:
 
 def handle_analyze_command(args: Dict[str, Any]) -> int:
     """Handle the analyze command."""
-    analyzer = MaterialAnalyzer()
+    analyzer = MaterialAnalyzer(
+        efficiency=args.get("efficiency", 0.5),
+        alpha_mass_fraction=args.get("alpha", 0.3),
+        projectile_mass_kg=args.get("projectile_mass", 0.045),
+    )
     visualizer = MaterialVisualizer(output_dir=args["output"])
 
-    # Prepare CSV data collection
     individual_results = []
 
     try:
@@ -144,18 +169,20 @@ def handle_analyze_command(args: Dict[str, Any]) -> int:
             for input_file in args["input"]:
                 data = analyzer.load_file(input_file)
 
-                # Print material properties as single line
+                # Print enhanced material properties
                 print(
-                    f"File: {input_file} | Force: {data.meta.max_force:.2f}N | "
+                    f"File: {input_file} | "
+                    f"Force: {data.meta.max_force:.2f}N | "
                     f"Modulus: {data.meta.modulus * 1e-6:.2f}MPa | "
                     f"Yield: {data.meta.yield_stress * 1e-6:.2f}MPa | "
-                    f"KE: {data.meta.kinetic_energy:.4f}J | "
-                    f"Velocity: {data.meta.velocity:.2f}m/s | "
+                    f"E/m: {data.meta.E_per_m:.4f}J/m | "
+                    f"V@1m: {data.meta.velocities[1]:.2f}m/s | "
+                    f"V@20m: {data.meta.velocities[5]:.2f}m/s | "
                     f"Length: {data.meta.length:.1f}mm | "
                     f"Diameter: {data.meta.size}mm"
                 )
 
-                # Collect data for CSV
+                # Collect data for CSV with both 1m and 20m velocities
                 individual_results.append(
                     {
                         "file": input_file,
@@ -164,8 +191,13 @@ def handle_analyze_command(args: Dict[str, Any]) -> int:
                         "max_force_N": data.meta.max_force,
                         "modulus_MPa": data.meta.modulus * 1e-6,
                         "yield_stress_MPa": data.meta.yield_stress * 1e-6,
-                        "kinetic_energy_J": data.meta.kinetic_energy,
-                        "velocity_m_s": data.meta.velocity,
+                        "E_sample_J": data.meta.E_sample_J,
+                        "E_per_m_J_m": data.meta.E_per_m,
+                        "L_gauge_m": data.meta.L_gauge_m,
+                        "velocity_1m_m_s": data.meta.velocities[1],
+                        "velocity_20m_m_s": data.meta.velocities[5],
+                        "kinetic_energy_1m_J": data.meta.kinetic_energies[1],
+                        "kinetic_energy_20m_J": data.meta.kinetic_energies[5],
                         "length_mm": data.meta.length,
                         "diameter_mm": data.meta.size,
                     }
@@ -177,17 +209,22 @@ def handle_analyze_command(args: Dict[str, Any]) -> int:
         else:  # multi
             data_list = [analyzer.load_file(f) for f in args["input"]]
 
-            # Print summary statistics as single line
-            ke_values = [d.meta.kinetic_energy for d in data_list]
-            vel_values = [d.meta.velocity for d in data_list]
+            # Print summary statistics
+            e_per_m_values = [d.meta.E_per_m for d in data_list]
+
+            # Get velocities at different lengths - index 5 is 20m
+            # L_eff_options = [0.5, 1.0, 2.0, 5.0, 10.0, 20.0]
+            vel_1m_values = [d.meta.velocities[1] for d in data_list]  # 1m is index 1
+            vel_20m_values = [d.meta.velocities[5] for d in data_list]  # 20m is index 5
+
             force_values = [d.meta.max_force for d in data_list]
             modulus_values = [d.meta.modulus for d in data_list]
             yield_values = [d.meta.yield_stress for d in data_list]
 
             print(
                 f"Multi-sample | Samples: {len(data_list)} | "
-                f"Avg KE: {np.mean(ke_values):.4f}±{np.std(ke_values):.4f}J | "
-                f"Avg V: {np.mean(vel_values):.2f}±{np.std(vel_values):.2f}m/s | "
+                f"Avg E/m: {np.mean(e_per_m_values):.4f}±{np.std(e_per_m_values):.4f}J/m | "  # noqa: B950
+                f"Avg V@20m: {np.mean(vel_20m_values):.2f}±{np.std(vel_20m_values):.2f}m/s | "  # noqa: B950
                 f"Avg Force: {np.mean(force_values):.2f}±{np.std(force_values):.2f}N"
             )
 
@@ -205,8 +242,13 @@ def handle_analyze_command(args: Dict[str, Any]) -> int:
                         "max_force_N": data.meta.max_force,
                         "modulus_MPa": data.meta.modulus * 1e-6,
                         "yield_stress_MPa": data.meta.yield_stress * 1e-6,
-                        "kinetic_energy_J": data.meta.kinetic_energy,
-                        "velocity_m_s": data.meta.velocity,
+                        "E_sample_J": data.meta.E_sample_J,
+                        "E_per_m_J_m": data.meta.E_per_m,
+                        "L_gauge_m": data.meta.L_gauge_m,
+                        "velocity_1m_m_s": data.meta.velocities[1],  # 1m
+                        "velocity_20m_m_s": data.meta.velocities[5],  # 20m
+                        "kinetic_energy_1m_J": data.meta.kinetic_energies[1],
+                        "kinetic_energy_20m_J": data.meta.kinetic_energies[5],
                         "length_mm": data.meta.length,
                         "diameter_mm": data.meta.size,
                     }
@@ -229,10 +271,18 @@ def handle_analyze_command(args: Dict[str, Any]) -> int:
                     "std_modulus_MPa": np.std(modulus_values) * 1e-6,
                     "avg_yield_stress_MPa": np.mean(yield_values) * 1e-6,
                     "std_yield_stress_MPa": np.std(yield_values) * 1e-6,
-                    "avg_kinetic_energy_J": np.mean(ke_values),
-                    "std_kinetic_energy_J": np.std(ke_values),
-                    "avg_velocity_m_s": np.mean(vel_values),
-                    "std_velocity_m_s": np.std(vel_values),
+                    "avg_E_per_m_J_m": np.mean(e_per_m_values),
+                    "std_E_per_m_J_m": np.std(e_per_m_values),
+                    "avg_velocity_1m_m_s": np.mean(vel_1m_values),
+                    "std_velocity_1m_m_s": np.std(vel_1m_values),
+                    "avg_velocity_20m_m_s": np.mean(vel_20m_values),
+                    "std_velocity_20m_m_s": np.std(vel_20m_values),
+                    "avg_kinetic_energy_1m_J": np.mean(
+                        [d.meta.kinetic_energy for d in data_list]
+                    ),
+                    "std_kinetic_energy_1m_J": np.std(
+                        [d.meta.kinetic_energy for d in data_list]
+                    ),
                     "length_mm": first_data.meta.length,
                     "diameter_mm": first_data.meta.size,
                 }
@@ -258,8 +308,6 @@ def handle_analyze_command(args: Dict[str, Any]) -> int:
 
 def _save_individual_results_csv(results: List[Any], output_dir: str) -> None:
     """Save individual test results to CSV file."""
-    from pathlib import Path
-
     import pandas as pd
 
     output_path = Path(output_dir)
@@ -277,12 +325,8 @@ def _save_individual_results_csv(results: List[Any], output_dir: str) -> None:
     logging.info(f"Individual results saved to {csv_path}")
 
 
-def _save_multi_results_csv(
-    results: List[Any], output_dir: str
-) -> None:  # list → List[Any]
+def _save_multi_results_csv(results: List[Any], output_dir: str) -> None:
     """Save multi-run average results to CSV file."""
-    from pathlib import Path
-
     import pandas as pd
 
     output_path = Path(output_dir)
@@ -300,7 +344,7 @@ def _save_multi_results_csv(
     logging.info(f"Multi-run averages saved to {csv_path}")
 
 
-def handle_visualize_command(args: Dict[str, Any]) -> int:  # dict → Dict[str, Any]
+def handle_visualize_command(args: Dict[str, Any]) -> int:
     """Handle the visualize command."""
     visualizer = MaterialVisualizer(output_dir=args["output"])
 
@@ -318,9 +362,13 @@ def handle_visualize_command(args: Dict[str, Any]) -> int:  # dict → Dict[str,
         return 1
 
 
-def handle_batch_command(args: Dict[str, Any]) -> int:  # dict → Dict[str, Any]
+def handle_batch_command(args: Dict[str, Any]) -> int:
     """Handle the batch processing command."""
-    analyzer = MaterialAnalyzer()
+    analyzer = MaterialAnalyzer(
+        efficiency=args.get("efficiency", 0.5),
+        alpha_mass_fraction=args.get("alpha", 0.3),
+        projectile_mass_kg=args.get("projectile_mass", 0.045),
+    )
     visualizer = MaterialVisualizer(output_dir=args["output"])
 
     try:

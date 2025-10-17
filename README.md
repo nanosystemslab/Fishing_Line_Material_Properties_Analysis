@@ -73,6 +73,10 @@
   find data -name "*in" -type d | while read dir; do echo "Processing $dir..."; poetry run Fishing_Line_Material_Properties_Analysis analyze -i $dir/test--line-crimp-* --plot-type multi; done
 ```
 
+```console
+for group in 1 2 3; do for length in 5in 10in 20in; do echo "=== Processing group_${group} ${length} ===" | tee -a analysis.log; poetry run Fishing_Line_Material_Properties_Analysis analyze -i data/group_${group}/${length}/*.csv --plot-type multi | tee -a analysis.log; done; done
+```
+
 ### Alternative Batch Command
 
 ```console

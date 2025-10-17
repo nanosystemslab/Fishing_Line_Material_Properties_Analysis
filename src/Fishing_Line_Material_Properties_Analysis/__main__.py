@@ -53,15 +53,8 @@ def parse_command_line() -> Dict[str, Any]:
     parser.add_argument(
         "--efficiency",
         type=float,
-        default=0.5,
-        help="Energy conversion efficiency (0-1, default: 0.5)",
-    )
-
-    parser.add_argument(
-        "--alpha",
-        type=float,
-        default=0.3,
-        help="Fraction of local line mass engaged (0-1, default: 0.3)",
+        default=1.0,
+        help="Energy conversion efficiency (0-1, default: 1.0 = ideal)",
     )
 
     parser.add_argument(
@@ -69,6 +62,13 @@ def parse_command_line() -> Dict[str, Any]:
         type=float,
         default=0.045,
         help="Projectile mass in kg (default: 0.045 = 45g)",
+    )
+
+    parser.add_argument(
+        "--line-accel-length",
+        type=float,
+        default=0.0,
+        help="Length of line that accelerates in m (default: 0.0)",
     )
 
     # Subcommands
@@ -156,9 +156,9 @@ def parse_command_line() -> Dict[str, Any]:
 def handle_analyze_command(args: Dict[str, Any]) -> int:
     """Handle the analyze command."""
     analyzer = MaterialAnalyzer(
-        efficiency=args.get("efficiency", 0.5),
-        alpha_mass_fraction=args.get("alpha", 0.3),
+        efficiency=args.get("efficiency", 1.0),
         projectile_mass_kg=args.get("projectile_mass", 0.045),
+        line_accel_length_m=args.get("line_accel_length", 0.0),
     )
     visualizer = MaterialVisualizer(output_dir=args["output"])
 
@@ -365,9 +365,9 @@ def handle_visualize_command(args: Dict[str, Any]) -> int:
 def handle_batch_command(args: Dict[str, Any]) -> int:
     """Handle the batch processing command."""
     analyzer = MaterialAnalyzer(
-        efficiency=args.get("efficiency", 0.5),
-        alpha_mass_fraction=args.get("alpha", 0.3),
+        efficiency=args.get("efficiency", 1.0),
         projectile_mass_kg=args.get("projectile_mass", 0.045),
+        line_accel_length_m=args.get("line_accel_length", 0.0),
     )
     visualizer = MaterialVisualizer(output_dir=args["output"])
 

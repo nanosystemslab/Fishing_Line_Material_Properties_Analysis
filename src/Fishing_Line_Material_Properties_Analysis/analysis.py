@@ -26,22 +26,22 @@ class MaterialAnalyzer:
     def __init__(
         self,
         efficiency: float = 0.5,
-        alpha_mass_fraction: float = 0.3,
         projectile_mass_kg: float = 0.045,
+        line_accel_length_m: float = 1.0,
     ) -> None:
         """Initialize the MaterialAnalyzer.
 
         Args:
             efficiency: Energy conversion efficiency (0-1), accounts for losses
-            alpha_mass_fraction: Fraction of local line mass engaged (0-1)
             projectile_mass_kg: Mass of projectile in kg (default 45g)
+            line_accel_length_m: Length of line that accelerates (default 1m)
         """
         self.log = logging.getLogger(__name__)
         self.efficiency = efficiency
-        self.alpha_mass_fraction = alpha_mass_fraction
         self.projectile_mass_kg = projectile_mass_kg
+        self.line_accel_length_m = line_accel_length_m
 
-        # Line density estimate (kg/m) - adjust based on actual material
+        # Line density estimate (kg/m³) - adjust based on actual material
         # Typical monofilament: ~1100 kg/m³ density
         self.line_density_kg_m3 = 1100.0
 
@@ -167,7 +167,7 @@ class MaterialAnalyzer:
 
         metadata = types.SimpleNamespace()
         metadata.filepath = filepath
-        metadata.size = size  # diameter in mm
+        metadata.size = size / 10  # diameter in mm
         metadata.ctype = ctype
         metadata.test_run = run_num
         metadata.length = length  # gauge length in mm
@@ -260,8 +260,7 @@ class MaterialAnalyzer:
 
         # Effective mass includes projectile + small amount of accelerating line
         # Assume ~1m of line accelerates with the projectile
-        l_line_accelerates = 1.0  # meters
-        m_line_accelerates = line_mass_per_m * l_line_accelerates
+        m_line_accelerates = line_mass_per_m * self.line_accel_length_m
         m_eff = self.projectile_mass_kg + m_line_accelerates
 
         velocities = []
@@ -288,8 +287,8 @@ class MaterialAnalyzer:
 
         # Store all properties in metadata
         df.meta.modulus = modulus
-        df.meta.yield_stress = stress.max()
-        df.meta.max_force = force.max()
+        df.meta.yield_stress = float(stress.max())
+        df.meta.max_force = float(force.max())
         df.meta.yield_point_strain = yield_point_strain
         df.meta.yield_point_stress = yield_point_stress
 

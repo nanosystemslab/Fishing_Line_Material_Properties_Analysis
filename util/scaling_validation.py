@@ -143,7 +143,7 @@ def analyze_scaling_validity(csv_path: str, output_dir: str = "out") -> None:
     # Save plot
     plt.tight_layout()
     plot_path = output_path / "scaling_validation.png"
-    fig.savefig(plot_path, dpi=300, bbox_inches="tight")
+    fig.savefig(plot_path, dpi=600, bbox_inches="tight")
     plt.close()
 
     print("\n" + "=" * 60)

@@ -1,3 +1,4 @@
+# Python cache and build files
 .mypy_cache/
 /.coverage
 /.coverage.*
@@ -8,6 +9,48 @@
 /docs/_build/
 /src/*.egg-info/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+.env
+.python-version
+*.virtualenv
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Thumbnails
+Thumbs.db
 
 # Ignore Raw Data
 data/
@@ -15,3 +58,33 @@ data/
 # Ignore Output Data
 out/
 node_modules/
+
+# Generated output files (LaTeX, logs, etc.)
+*.log
+results_table.tex
+summary_tables.tex
+*.aux
+*.bbl
+*.blg
+*.fls
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data files (adjust as needed)
+*.csv
+*.xlsx
+*.xls
+!**/example*.csv
+!**/sample*.csv
+
+# Plots and figures (optional - remove if you want to track them)
+# *.png
+# *.jpg
+# *.pdf
+# *.svg
